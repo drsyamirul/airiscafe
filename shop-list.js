@@ -25,3 +25,33 @@ init : () => {
   slist.draw();
 }
 window.addEventListener("load", slist.init);
+
+// (B) SAVE SHOPPING LIST INTO LOCAL STORAGE
+save : () => {
+  if (localStorage.items == undefined) { localStorage.items = "[]"; }
+  localStorage.items = JSON.stringify(slist.items);
+}
+ 
+// (C) ADD NEW ITEM TO THE LIST
+add : (evt) => {
+  // (C1) PREVENT FORM SUBMIT
+  evt.preventDefault();
+ 
+  // (C2) ADD NEW ITEM TO LIST
+  slist.items.push({
+    name : slist.hitem.value, // item name
+    done : false // true for "got it", false for "not yet"
+  });
+  slist.hitem.value = "";
+  slist.save();
+ 
+  // (C3) REDRAW HTML SHOPPING LIST
+  slist.draw();
+}
+
+// (D) DELETE SELECTED ITEM
+delete : (id) => { if (confirm("Remove this item?")) {
+  slist.items.splice(id, 1);
+  slist.save();
+  slist.draw();
+}}
